@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Rediģēt pasniedzēju</title>
+	<link rel="icon" href="http://localhost/system-for-automatic-generation-of-lesson-schedules/src/main/resources/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="http://localhost/system-for-automatic-generation-of-lesson-schedules/src/main/resources/style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+    <style>.invalid-feedback {left: 900px;}</style>
+</head>
+<body>
+	<div th:insert="~{fragments/header :: header}"></div>
+    <div class="container">
+        <h3>Rediģēt pasniedzēju</h3>
+        <div class="card">
+			<a href="/teachers" class="btn-primary"><i class="fa fa-reply"> Atpakaļ </i></a>
+            <div class="card-body">
+                <form action="#" th:action="@{/update-teacher/{id}(id=${teacher.id})}" th:object="${teacher}" method="post">
+                    <div class="form-group">
+                        <label>Vārds</label> 
+                        <input type="text" th:field="*{name}" class="form-control" id="name" placeholder="Vārds"
+						    th:classappend="${#fields.hasErrors('name')}? 'is-invalid' : ''"/>
+						<div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                    </div>
+                    <div class="form-group">
+						<label>Amats / Zinātniskais nosaukums</label>
+						<select th:field ="*{position}" class="form-control"
+						    th:classappend="${#fields.hasErrors('position')}? 'is-invalid' : ''">
+							<option value="" selected>-- Atlasiet amatu --</option>
+							<option th:each="position : ${T(vea.model.Position).values()}"
+							     th:value="${position}"
+							     th:text="${position}">
+							</option>
+						</select>
+						<div class="invalid-feedback" th:if="${#fields.hasErrors('position')}" th:errors="*{position}"></div>
+					</div>
+					<div class="form-group">
+						<label>Var mācīt tikai tiešsaistē</label> 
+                        <input type="checkbox" th:field="*{onlyOnline}"/>
+					</div>
+                    <div class="form-group">
+						<label>Auditorija Nr. 1</label>
+						<select th:field ="*{classroom1}" class="form-control">
+							<option value="" selected>-- Atlasiet auditoriju --</option>
+							   <option th:each="classroom: ${classroom}" th:value="${classroom.id}" th:text="${classroom.title}"></option>
+						</select>
+					</div>
+                    <div class="form-group">
+						<label>Auditorija Nr. 2</label>
+						<select th:field ="*{classroom2}" class="form-control">
+							<option value="" selected>-- Atlasiet auditoriju --</option>
+							   <option th:each="classroom: ${classroom}" th:value="${classroom.id}" th:text="${classroom.title}"></option>
+						</select>
+					</div>
+                    <div class="form-group">
+						<label>Auditorija Nr. 3</label>
+						<select th:field ="*{classroom3}" class="form-control">
+							<option value="" selected>-- Atlasiet auditoriju --</option>
+							   <option th:each="classroom: ${classroom}" th:value="${classroom.id}" th:text="${classroom.title}"></option>
+						</select>
+					</div>
+                    <div class="form-group">
+						<label>Auditorija Nr. 4</label>
+						<select th:field ="*{classroom4}" class="form-control">
+							<option value="" selected>-- Atlasiet auditoriju --</option>
+							   <option th:each="classroom: ${classroom}" th:value="${classroom.id}" th:text="${classroom.title}"></option>
+						</select>
+					</div>
+                    <div class="form-group">
+						<label>Auditorija Nr. 5</label>
+						<select th:field ="*{classroom5}" class="form-control">
+							<option value="" selected>-- Atlasiet auditoriju --</option>
+							   <option th:each="classroom: ${classroom}" th:value="${classroom.id}" th:text="${classroom.title}"></option>
+						</select>
+					</div>
+					<input type="submit" style="position: relative; right: -198px;" class="btn-primary" value="Iesniegt">
+                </form>
+            </div>
+        </div>
+		<div class="content" style="padding: 34px;"></div>
+    </div>
+    <div th:insert="~{fragments/footer :: footer}"></div>
+</body>
+</html>

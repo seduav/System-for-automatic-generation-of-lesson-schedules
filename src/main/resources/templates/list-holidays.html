@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Visas brīvdienas</title>
+	<link rel="icon" href="http://localhost/system-for-automatic-generation-of-lesson-schedules/src/main/resources/favicon.ico" type="image/x-icon">
+	<link rel="stylesheet" href="http://localhost/system-for-automatic-generation-of-lesson-schedules/src/main/resources/style.css">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+	<style>.card-body { display: block; }</style>
+	<script>
+		function confirmDeletion() {
+		    return confirm("Vai tiešām vēlaties dzēst?");
+		}
+	</script>	
+</head>
+<body>
+	<div th:insert="~{fragments/header :: header}"></div>
+	<div class="container" style="padding-left: 280px; padding-right: 280px;">
+		<div class="card">
+			<div class="card-body">
+				<div th:switch="${holidays}" class="container">
+					<div>
+						<div class="button-container">
+							<a href="/add-holiday" class="btn-primary"><i class="fa fa-plus"> Pievienot brīvdienu </i></a>
+						</div>
+						<div class="line-separator"></div>
+						<p>Kopējais brīvdienu skaits: <span th:text="${rowCount}"></span></p>
+				    </div>
+						<table class="table table-striped">
+							<thead>
+								<tr>
+									<th>Nosaukums</th>
+									<th>Datums</th>
+									<th>Rediģēt</th>
+									<th>Dzēst</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="holiday : ${holidays}">
+									<td th:text="${holiday.title}"></td>
+									<td th:text="${holiday.date}"></td>
+									<td><a th:href="@{/update-holiday/{id}(id=${holiday.id})}" class="btn-primary">
+										<i class="fas fa-pen-alt"></i></a></td>
+									<td><a th:href="@{/remove-holiday/{id}(id=${holiday.id})}" class="btn-primary" 
+										onclick="return confirmDeletion()"><i class="fas fa-trash-alt"></i></a></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div th:insert="~{fragments/footer :: footer}"></div>
+</body>
+</html>

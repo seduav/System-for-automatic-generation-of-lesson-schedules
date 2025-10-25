@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Pasniedzējs</title>
+	<link rel="icon" href="http://localhost/system-for-automatic-generation-of-lesson-schedules/src/main/resources/favicon.ico" type="image/x-icon">
+	<link rel="stylesheet" href="http://localhost/system-for-automatic-generation-of-lesson-schedules/src/main/resources/style.css">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+	<script th:inline="javascript">
+        function confirmDeletion() {
+            return confirm("Vai tiešām vēlaties dzēst?");
+        }
+        window.onload = function() {
+            var errorMsg = /*[[${errormsg}]]*/ '';
+            if (errorMsg) {
+                alert(errorMsg);
+            }
+        }
+    </script>
+</head>
+<body>
+	<div th:insert="~{fragments/header :: header}"></div>
+	<div class="container">
+		<div class="card">
+			<div th:switch="${courses}" class="container">
+				<div>
+					<div class="button-container">
+						<a href="/teachers" class="btn-primary"><i class="fa fa-reply"> Atpakaļ </i></a>
+			            <a th:text="'Kursu saraksts priekš ' + ${name}" style="font-size: 2em;"></a>
+			            <a th:href="@{/remove-teacher/{id}(id=${teacher.id})}" class="btn-primary" 
+			                onclick="return confirmDeletion()"><i class="fas fa-user-times"> Dzēst </i></a>
+					</div>
+					<div class="line-separator"></div>
+					<p>Kopējais nodarbību skaits: <span th:text="${totalLessons}"></span></p>
+			    </div>
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>Nosaukums</th>
+							<th>Pirmais pasniedzējs</th>
+							<th>Otrais pasniedzējs</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="course : ${courses}">
+							<td th:text="${course.title}"></td>
+							<td th:text="${course.teacher1.name}"></td>
+							<td th:text="${course.teacher2!= null ? course.teacher2.name : ''}"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>	
+			<div class="container">	
+				<a th:text="'Nepiemērotu auditoriju saraksts'" style="font-size: 2em; position: relative; right: -480px;"></a>
+				<div class="line-separator"></div>
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>Auditorija Nr. 1</th>
+							<th>Auditorija Nr. 2</th>
+							<th>Auditorija Nr. 3</th>
+							<th>Auditorija Nr. 4</th>
+							<th>Auditorija Nr. 5</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="teacher : ${teacher}">
+							<td th:text="${teacher.classroom1!= null ? teacher.classroom1.title : ''}"></td>
+							<td th:text="${teacher.classroom2!= null ? teacher.classroom2.title : ''}"></td>
+							<td th:text="${teacher.classroom3!= null ? teacher.classroom3.title : ''}"></td>
+							<td th:text="${teacher.classroom4!= null ? teacher.classroom4.title : ''}"></td>
+							<td th:text="${teacher.classroom5!= null ? teacher.classroom5.title : ''}"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="container">	
+				<div class="button-container">	
+				<a th:text="'Nepiemērotu datumu un laiku saraksts'" style="font-size: 2em; position: relative; right: -440px;"></a>
+				<a th:href="@{/add-unavailability/{id}(id=${teacher.id})}" class="btn-primary"><i class="fa fa-plus"> Pievienot nepiemērotu datumu </i></a>
+			    </div>
+				<div class="line-separator"></div>
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>Datums</th>
+							<th>Sākuma laiks</th>
+							<th>Beigu laiks</th>
+							<th>Dzēst</th>
+						</tr>
+					</thead>
+					<tbody>
+					    <tr th:each="unavailability : ${unavailabilities}">
+					    	<td th:text="${unavailability.date}"></td>
+					    	<td th:text="${unavailability.startTime}"></td>
+					    	<td th:text="${unavailability.endTime}"></td>
+							<td><a th:href="@{/remove-unavailability/{teacherId}(teacherId=${unavailability.teacher.id}, unavailabilityId=${unavailability.id})}"
+								class="btn-primary" onclick="return confirmDeletion()"><i class="fas fa-trash-alt"></i></a></td>
+					    </tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div th:insert="~{fragments/footer :: footer}"></div>
+</body>
+</html>
